@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 #   This file is part of Augur - <http://github.com/winry-linux/augur>
 #
 #   Copyright 2017, Joshua Strot <joshua@winrylinux.org>
@@ -17,21 +15,4 @@
 #   You should have received a copy of the GNU General Public License
 #   along with Augur. If not, see <http://www.gnu.org/licenses/>.
 
-def banner():
-    """Print a banner for the program"""
-
-    print("""
-
-     /\\
-    /  \  _   _  __ _ _   _ _ __
-   / /\ \| | | |/ _` | | | | '__|
-  / ____ \ |_| | (_| | |_| | |
- /_/    \_\__,_|\__, |\__,_|_|
-                 __/ |
-                |___/
-
-    Author: Joshua Strot
-    Email:  joshua@winrylinux.org
-    """)
-
-    return True
+__all__ = ["compare", "parseRepo"]
