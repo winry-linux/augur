@@ -1,1 +1,1 @@
-__all__ = ["configuration", "display", "parser", "scraper"] 
+__all__ = ["configuration", "display", "parser", "scraper"]

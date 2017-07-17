@@ -20,9 +20,9 @@
 def banner():
     """Print a banner for the program"""
 
-    print("""
+    print(r"""
 
-     /\\
+     /\
     /  \  _   _  __ _ _   _ _ __
    / /\ \| | | |/ _` | | | | '__|
   / ____ \ |_| | (_| | |_| | |

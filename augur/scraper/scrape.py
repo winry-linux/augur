@@ -19,10 +19,9 @@
 
 import urllib.request
 
+from sys import stdout
 from bs4 import BeautifulSoup
 from yaml import dump, CDumper as Dumper
-from sys import stdout
-from multiprocessing import pool
 
 def scrapeAur(aurUrl, cacheFile):
     """Scrape a list of packages and versions from the AUR"""
