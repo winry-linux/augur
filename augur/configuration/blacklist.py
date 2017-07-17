@@ -20,7 +20,7 @@
 from os import path
 from yaml import load, dump, CDumper as Dumper, CLoader as Loader
 
-from . import configure
+from augur.configuration import configure
 
 def readBlacklist():
     """Read the blacklist"""

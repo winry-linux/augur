@@ -20,7 +20,7 @@
 from os import path
 from yaml import load, CLoader as Loader
 
-from . import configure
+from augur.configuration import configure
 
 def loadAurCache():
     """Load the AUR packages from the cache"""
