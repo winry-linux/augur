@@ -36,6 +36,10 @@ Configuring
 ===========
 Augur can run perfectly fine without configuring, however there are some configuration options you can configure. You can configure them globally by editing them in `/etc/augur`, but if you would like to make the configurations effective only for your user, copy them to `$HOME/.config/augur`.
 
+Documentation
+=============
+Augur has very detailed Numpy style docstrings throughout the code for reference, and Sphinx docs already set up. If you would like to build some docs for reference, you can navigate to the docs and run `make builder`, where `builder` is any one of the available builder formats available from sphinx. To see a full list of builder's, see [Sphinx Documentation](http://www.sphinx-doc.org/en/stable/builders.html). Please note that you will need to install the numpydocs python module to do this however.
+
 Authors
 =======
 * Joshua Strot - joshua@winrylinux.org
