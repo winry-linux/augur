@@ -27,13 +27,14 @@ from augur.configuration import *
 from augur.scraper import *
 from augur.parser import *
 
-#Exit if root
+# Exit if root
 if geteuid() == 0:
     print("=> This program cannot be ran as root")
     exit(0)
 
-#Set up the argument parser, add the needed options
-parser = argparse.ArgumentParser(description='Check the Winry repository for updates from the AUR.')
+# Set up the argument parser, add the needed options
+parser = argparse.ArgumentParser(
+    description='Check the Winry repository for updates from the AUR.')
 parserGroup = parser.add_mutually_exclusive_group()
 parserGroup.add_argument('-u', "--update", action="store_true", help="Update the list of AUR packages and versions")
 parserGroup.add_argument('-c', "--check", action="store_true", help="Check the list of AUR packages again the repository")
@@ -41,50 +42,50 @@ parserGroup.add_argument('-b', "--blacklist", type=str, metavar="PACKAGE", help=
 parserGroup.add_argument('-w', "--whitelist", type=str, metavar="PACKAGE", help="Whitelist a package so it is checked again")
 parserGroup.add_argument('-p', "--printblack", action="store_true", help="Print the blacklist")
 
-#Output help if no argument is passed, exit
+# Output help if no argument is passed, exit
 if len(argv) == 1:
     asciiArt.banner()
     parser.print_help()
     exit(1)
 
-#Parse args
-args=parser.parse_args()
+# Parse args
+args = parser.parse_args()
 
-#configure Augur
+# configure Augur
 config = configure.loadConfiguration()
 
-#Run the program
+# Run the program
 if args.update:
     print("=> Updating cache")
 
-    #Load cache
+    # Load cache
     cachePath = configure.checkCache(True)
 
-    #Download the AUR package list
+    # Download the AUR package list
     scrape.scrapeAur(config["AURUrl"], cachePath)
 elif args.check:
     print("=> Checking for version changes")
 
-    #Load cache
+    # Load cache
     cachePath = configure.checkCache(False)
 
-    #Load blacklist
+    # Load blacklist
     blacklistPacks = blacklist.readBlacklist()
 
-    #Load winry-testing packages
+    # Load winry-testing packages
     winryPackages = parseRepo.parsePackages(config["Mirror"])
 
-    #Load AUR packages
+    # Load AUR packages
     aurPackages = load.loadAurCache()
 
-    #Compare the packages
+    # Compare the packages
     compare.compare(winryPackages, aurPackages, blacklistPacks)
 elif args.blacklist:
-    #Blacklist the defined package
+    # Blacklist the defined package
     blacklist.addBlacklist(args.blacklist)
 elif args.whitelist:
-    #Remove a package from the blacklist
+    # Remove a package from the blacklist
     blacklist.whitelist(args.whitelist)
 elif args.printblack:
-    #Print the blacklist
+    # Print the blacklist
     blacklist.printBlacklist()

@@ -22,15 +22,24 @@ from yaml import load, CLoader as Loader
 
 from augur.configuration import configure
 
-def loadAurCache():
-    """Load the AUR packages from the cache"""
 
+def loadAurCache():
+    """
+    Read and load the cache of AUR packages. Uses CLoader as opposed to PyYAML's
+    default Loader. Function will exit if it cannot read the cache.
+
+    Returns
+    -------
+    dict
+        YAML loaded dictionary of packages from the cache.
+
+    """
     print("=> Loading AUR packages from cache")
 
-    #Load xdg cache path
+    # Load xdg cache path
     cachePath = configure.loadXDGVars()["xdgCache"]
 
-    #Load the packages
+    # Load the packages
     packages = {}
     if path.isfile("%(cachePath)s/augur/packages.yaml" % locals()):
         try:

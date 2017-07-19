@@ -20,24 +20,54 @@
 from urllib import request
 from tarfile import open as tarOpen
 
-def downloadDatabase(mirror):
-    """Download the database from a specific mirror"""
 
+def downloadDatabase(mirror):
+    """
+    Download the database of packages and versions from the specified mirror.
+    Performs no parsing, just downloads it to ``/tmp/winry-testing.db``. In the
+    future this should be expanded to perform more error handling on the Downloading
+    of the database.
+
+    Parameters
+    ----------
+    mirror : str
+        URL of the mirror to download the database from. URL most contain a valid
+        web protocol such as ``http://`` or ``https://``
+
+    """
     print("=> Downloading database from mirror")
 
     request.urlretrieve("%(mirror)s/winry-testing/winry-testing.db" % locals(), "/tmp/winry-testing.db")
 
-def parsePackages(mirror):
-    """Parse a tarred pacman database and find the packages and versions. This is basically a wrapper"""
 
-    #Download an updated database into the /tmp directory
+def parsePackages(mirror):
+    """
+    Parse a tarred pacman database and find the packages and versions. Opens the
+    database and then parses all of the top level directory names to generate
+    a dictionary of all the packages and versions. This is essentially a more
+    advanced wrapper of ``downloadDatabases()``
+
+    Parameters
+    ----------
+    mirror : str
+        URL of the mirror to download the database from. URL most contain a valid
+        web protocol such as ``http://`` or ``https://``
+
+    Returns
+    -------
+    dict
+        Dictionary of all the packages and versions from the mirrors database.
+        All the package names will be keys, with their versions as values.
+
+    """
+    # Download an updated database into the /tmp directory
     downloadDatabase(mirror)
 
-    #Open the database as an archive
+    # Open the database as an archive
     archive = tarOpen("/tmp/winry-testing.db")
     packagesRaw = [package for package in archive.getnames() if "/" not in package]
 
-    #Parse database into dictionary
+    # Parse database into dictionary
     packages = {}
     for package in packagesRaw:
         packages[package.rsplit("-", 2)[0]] = "-".join(package.rsplit("-", 2)[1:])

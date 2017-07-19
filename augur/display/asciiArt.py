@@ -17,9 +17,17 @@
 #   You should have received a copy of the GNU General Public License
 #   along with Augur. If not, see <http://www.gnu.org/licenses/>.
 
-def banner():
-    """Print a banner for the program"""
 
+def banner():
+    """
+    Print the banner to be displayed at the help menu.
+
+    Returns
+    -------
+    bool
+        Always returns True.
+
+    """
     print(r"""
 
      /\

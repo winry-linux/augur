@@ -1,0 +1,7 @@
+augur
+=====
+
+.. toctree::
+   :maxdepth: 4
+
+   augur

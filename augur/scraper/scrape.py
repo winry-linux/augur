@@ -23,24 +23,55 @@ from sys import stdout
 from bs4 import BeautifulSoup
 from yaml import dump, CDumper as Dumper
 
-def scrapeAur(aurUrl, cacheFile):
-    """Scrape a list of packages and versions from the AUR"""
 
+def scrapeAur(aurUrl, cacheFile, perPage=250):
+    """
+    Scrape a list of packages and versions from the AUR. Iterates over each page,
+    downloads it, and then parses it into a list of compiled package names and
+    versions. There is no current API to fetch a list of both package names and
+    versions, so currently this is the only way to do this. To speed it up, the
+    ammount per page is set at the highest value, 250, but if for some reason
+    you would want to use less you could lower it. Does use CDumper vs. PyYAML
+    default Dumper.
+
+    Currently this process takes quite a while to complete, and some optimization
+    could perhaps be done, but it's intentional that this isn't multi-threaded.
+    As it stands this already puts quite a burden on AUR servers, and any effort
+    to increase the ammount of requests over a period of time would only
+    exasperate this.
+
+    Parameters
+    ----------
+    aurUrl : str
+        The URL of the AUR with a valid web protocol specified, such as
+        ``https://`` or ``http://``. Do not a leading forward slash.
+    cacheFile : str
+        The path to the user's local cache file. Should be a full path.
+    perPage : int
+        The ammount of packages per page to request for scraping. Should for most
+        purposes be left alone, but can be changed to 50, 100, 250.
+
+    Returns
+    -------
+    bool
+        This will return True if finished scraping and was able to dump to a
+        cache file, but otherwise False.
+
+    """
     print("=> Now scraping the packages from the AUR")
 
-    #Define some variables to assist in the URL
+    # Define some variables to assist in the URL
     start = 0
-    perPage = 250
     webpath = "%(aurUrl)s/packages/?O=%(start)s&C=0&SeB=nd&SB=n&SO=a&PP=%(perPage)s&do_Search=Go"
 
-    #Download the total ammount of pages
+    # Download the total ammount of pages
     initialDownload = urllib.request.urlopen(webpath % locals()).read()
     soup = BeautifulSoup(initialDownload, "html.parser")
     packagesQuant = soup.find("div", {"class": "pkglist-stats"})
 
     pagesTotal = int(packagesQuant.p.get_text().split(" ")[-1].replace("\t", "").replace(".", ""))
 
-    #Begin iterating to build the list of packages
+    # Begin iterating to build the list of packages
     packages = {}
     for page in range(1, pagesTotal):
         stdout.write("\r    => Scraping page %(page)s of %(pagesTotal)s" % locals())
@@ -55,14 +86,15 @@ def scrapeAur(aurUrl, cacheFile):
 
     stdout.write("\r    => Finished scraping.           \n")
 
-    #Write contents to cache
+    # Write contents to cache
     print("=> Dumping scrape to cache.")
     try:
         with open(cacheFile, "w") as cache:
             dump(packages, cache, encoding="utf-8", default_flow_style=False, Dumper=Dumper)
     except IOError as e:
         print("=> Error! Could not write to cache.")
+        return False
 
-
-    #Finished
+    # Finished
     print("=> Update complete.")
+    return True
