@@ -44,7 +44,7 @@ setup(
     long_description="""Augur is a remake of an older program written for Manjaro, 
     Satori, that has been improved and revamped for Winry. Augur scrapes a list of 
     packages and versions from the AUR, and then compares them with packages that 
-    have been pulled into the Winry repository to check for upgrades / downgrades."""
+    have been pulled into the Winry repository to check for upgrades / downgrades.""",
     
     packages=_packages,
     scripts=_scripts,
