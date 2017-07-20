@@ -35,7 +35,7 @@ _data_files = [(
 
 setup(
     name="Augur",
-    version="0.1.1",
+    version="0.1.2",
     url="https://github.com/winry-linux/augur",
     license="GPLv3",
     author="Joshua Strot",

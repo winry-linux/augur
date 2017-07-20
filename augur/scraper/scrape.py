@@ -47,7 +47,7 @@ def scrapeAur(aurUrl, cacheFile, perPage=250):
         ``https://`` or ``http://``. Do not a leading forward slash.
     cacheFile : str
         The path to the user's local cache file. Should be a full path.
-    perPage : int
+    perPage : int, optional
         The ammount of packages per page to request for scraping. Should for most
         purposes be left alone, but can be changed to 50, 100, 250.
 
